@@ -1,3 +1,5 @@
+from classes.element import *
+from classes.species import *
 from classes.energylevel import EnergyLevel
 from classes.transition import Transition
 from classes.helpers import * #@UnusedWildImport
@@ -26,8 +28,8 @@ with open('o_2.nrg','r') as nrgFile:
         tLevel.index=pullValue(tList,'INT')
         tLevel.energy=pullValue(tList,'FLOAT')
         tLevel.g=pullValue(tList, 'FLOAT')
-        tLevel.config=pullValue(tList, 'STRING')
-        tLevel.term=pullValue(tList, 'STRING')               
+        tLevel.config=pullValue(tList)
+        tLevel.term=pullValue(tList)               
         
         levels.append(tLevel)
         
@@ -48,7 +50,7 @@ with open('o_2.tp','r') as tpFile:
           
         isEina = False
         
-        tbEina = pullValue(tList, 'STRING')        
+        tbEina = pullValue(tList)        
         if tbEina == 'A':isEina=True
         
         tLo = pullValue(tList, 'INT')
@@ -58,7 +60,7 @@ with open('o_2.tp','r') as tpFile:
         #print(tList)
         
         if len(tList)>0:
-            tType = pullValue(tList, 'STRING')
+            tType = pullValue(tList)
         else:
             tType = None
          
@@ -73,40 +75,55 @@ with open('o_2.tp','r') as tpFile:
                 tTran.eina.setTP(tTP, tType)
                 transitions[sKey]=tTran
 
-# with open('o_2.coll','r') as collFile:
-#     tString=collFile.readline()    
-#     tTemps=collFile.readline().split()
-#     
-#     #print(tTemps)
-#     tTemps.pop(0)
-#     #print(tTemps)
-#     
-#     for line in collFile:
-#         tList=line.split()
-#         if "****" in tList[0]:break
-#         #print(tList)
-#         
-#         if tList.pop(0) != 'CS': sys.exit("NOT CS")
-#         
-#         if tList.pop(0) != 'ELECTRON': sys.exit("NOT ELECTRON")  
-#         
-#         #print(tList) 
-#         
-#         tLo = tList.pop(0)
-#         is_int(tLo)
-#         
-#         tHi = tList.pop(0)
-#         is_int(tHi)
-#         
-#         #print(tList)
-#         
-#         sKey = str(tLo) + ":" + str(tHi)
-#         
-#         x = transitions[sKey].setCS(tTemps,tList)
-#         
-#         
-# 
-# transitions['1:5'].print()
+with open('o_2.coll','r') as collFile:
+    tString=collFile.readline()     
+    tTemps=collFile.readline().split()
+    if pullValue(tTemps) != 'TEMP': sys.exit("Coll files should start with TEMP")
+     
+    for line in collFile:
+        tList=line.split()
+        if "****" in tList[0]:break
+        if 'TEMP' in tList[0]:
+            sys.exit("Multiple temperature lines!!!")
+        #print(tList)
+         
+        # Only supporting CS Electron at the moment        
+        tx = pullValue(tList)
+        if tx != 'CS': sys.exit("NOT CS") 
+        tx = pullValue(tList)        
+        if tx != 'ELECTRON': sys.exit("NOT ELECTRON")  
+         
+        #print(tList) 
+         
+        tLo = pullValue(tList, 'INT')         
+        tHi = pullValue(tList, 'INT') 
+         
+        #print(tList)
+         
+        sKey = str(tLo) + ":" + str(tHi)
+
+        transitions[sKey].setCS(tTemps,tList)         
 
 
+#transitions['1:4'].print()
+x = element("Carbon","C")
+#y = element("Hydrogen","H")
+
+x.atomicnumber=6
+y = element("Hydrogen","H")
+y.atomicnumber=1
+
+print(x.name,y.name)
+
+a = EnergyLevel(1,6.5,3)
+print(a.index)
+
+b = species()
+b.name="Hydrogen"
+print(b.name)
+
+
+
+
+#transitions['1:2'].print()
 
