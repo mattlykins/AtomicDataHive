@@ -31,7 +31,7 @@ if SET_DEBUG['preload']:
 # Take in parameters: DB Type (Stout) and import location (file or folder)
 
 isStout = True
-location = ".\\stout\\"
+location = ".\\"
 
 
 
@@ -56,11 +56,12 @@ for path in pathList:
     specIon = pullValue(nameList, 'INT')
     elemIon = specIon - 1
     
-    #print(elemName,specIon)
+    print(elemName,specIon)
     
     #-------------------------------------------
     
 C = species()
+
 
 
 
