@@ -2,24 +2,11 @@ from classes.energylevel import EnergyLevel
 
 ## Store transition probabilities by transition type
 class tranProb(object):
-    E1 = 0.0
-    E2=0.0
-    E3=0.0
-    M1=0.0
-    M2=0.0
-    M3=0.0
     
     ## Initialize all tps to zero
     def __init__(self):
         pass
-        
-    ## Prevent objects from getting new attributes
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            object.__setattr__(self, name, value)
-        else:
-            raise TypeError('Cannot set name %r on object of type %s' % (name, self.__class__.__name__))
-                
+                    
     ## Set the tp for a given type
     # @param value The Einstein A for the transition type
     # @param tType String denoting the transition type. Not required for electric dipole

@@ -1,4 +1,6 @@
-from classes.element import element
-class species(element):
+class species(object):
     def __init__(self):
-        print("CRAP")
+        self.levels=[]
+        self.transitions={}
+    
+

@@ -1,24 +1,14 @@
 from classes.helpers import * #@UnusedWildImport
 ##Store energy level data
 class EnergyLevel(object):
-    _index = -1
-    _energy = -1
-    _g = -1
-    config = ""
-    term = ""
     ## Construct energy level
     # parameters can be set here or in individual methods
     def __init__(self,index=None,energy=None,g=None):
         self.energy=energy if energy is not None else -1
         self.g=g if g is not None else -1
         self.index=index if index is not None else -1
-        
-    ## Prevent objects from getting new attributes
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            object.__setattr__(self, name, value)
-        else:
-            raise TypeError('Cannot set name %r on object of type %s' % (name, self.__class__.__name__))
+        self.config = ""
+        self.term = ""
         
     @property
     def index(self):

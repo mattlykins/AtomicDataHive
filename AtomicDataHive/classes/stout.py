@@ -2,20 +2,12 @@ from classes.energylevel import EnergyLevel
 from classes.transition import Transition
 from classes.helpers import * #@UnusedWildImport
 class stout():
-    levels=[]
-    transitions={}
     
-    def __init__(self):
-        pass
-
-    ## Prevent objects from getting new attributes
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            object.__setattr__(self, name, value)
-        else:
-            raise TypeError('Cannot set name %r on object of type %s' % (name, self.__class__.__name__))
+    def __init__(self,spec):
+        self.species = spec
+        readstout(self,spec)
         
-    def readStout(self):        
+    def readStout(self,spec):        
         
         SET_DEBUG={
            'prelevel':False,
@@ -43,15 +35,15 @@ class stout():
                 tLevel.config=pullValue(tList)
                 tLevel.term=pullValue(tList)               
         
-                stout.levels.append(tLevel)
+                spec.levels.append(tLevel)
         
                 #Make sure levels are in order
-                if int(tLevel.index) != len(stout.levels):
+                if int(tLevel.index) != len(spec.levels):
                     raise Exception("Energy Levels out of order")
                 
     
             if SET_DEBUG['postLevel']:    
-                for level in stout.levels:
+                for level in spec.levels:
                     print(level.index,level.energy,level.g)
         
 
@@ -81,16 +73,16 @@ class stout():
          
                 sKey = str(tLo) + ':' + str(tHi)
         
-                if sKey in stout.transitions:
+                if sKey in spec.transitions:
                     if isEina:
-                        stout.transitions[sKey].eina.setTP(tTP, tType)                        
+                        spec.transitions[sKey].eina.setTP(tTP, tType)                        
                     else:
                         raise Exception("Not Eina")
                 else:        
-                    tTran = Transition(stout.levels[tLo-1],stout.levels[tHi-1])
+                    tTran = Transition(spec.levels[tLo-1],spec.levels[tHi-1])
                     if isEina:
                         tTran.eina.setTP(tTP, tType)
-                        stout.transitions[sKey]=tTran
+                        spec.transitions[sKey]=tTran
                     else:
                         raise Exception("Not Eina")
 
@@ -125,7 +117,7 @@ class stout():
           
                 sKey = str(tLo) + ":" + str(tHi)
  
-                stout.transitions[sKey].setCS(tTemps,tList)
+                spec.transitions[sKey].setCS(tTemps,tList)
     
     def writeStout(self):
         pass
