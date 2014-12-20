@@ -1,0 +1,9 @@
+11 10 14
+TEMP	1.00E+03	4.00E+03	1.00E+04	4.00E+04	1.00E+05	4.00E+05
+CS ELECTRON	1	2	2.66E-01	2.99E-01	3.14E-01	3.50E-01	4.00E-01	4.73E-01
+TEMP	3.00E+01	1.00E+03	2.00E+03	3.00E+03
+RATE H	1	2	1.30E-09	1.30E-09	1.30E-09	1.30E-09
+***********
+#References
+"# Electron CS: Griffin,D.C., Mitnik,D.M. & Badnell, N. R.,2001,JPhB,34,4401"
+"# Atomic Hydrogen Rates: Hollenbach, D. & McKee, C. F. 1989, ApJ, 342, 306"

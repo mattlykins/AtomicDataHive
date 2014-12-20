@@ -1,0 +1,8 @@
+11 10 14
+TEMP	1e3	1e4
+CS ELECTRON	1	2	1.587	1.587
+CS ELECTRON	1	3	0.707	0.707
+CS ELECTRON	2	3	3.566	3.566
+************************
+#Reference
+#Krueger, T.K., and Czyzak, S.J., 1970, Proc Roy Soc London A 318, 531
