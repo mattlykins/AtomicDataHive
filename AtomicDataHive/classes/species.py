@@ -10,5 +10,7 @@ class species(object):
         self.elemSymbol = ELEMENT_SYMBOLS[self.Z]
         self.spectrumName = self.elemSymbol + ROMAN_NUMS[self.specIon]
         self.ionName = self.elemSymbol + "+" + str(self.elemIon)
+        self.stoutName =self.elemSymbol.lower() + "_" + str(self.specIon)
+        
     
 

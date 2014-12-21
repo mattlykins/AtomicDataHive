@@ -22,8 +22,10 @@ class tranProb(object):
         elif tType == 'M1':self.M1=value
         elif tType == 'M2':self.M2=value
         elif tType == 'M3':self.M3=value
-        elif tType == None:self.E1=value
-        else: raise ValueError("%s is unknown type" % tType)
+        elif tType == None or tType == 'E1':self.E1=value
+        else:
+            print("%s is unknown type" % tType)
+            #raise ValueError("%s is unknown type" % tType)
     
     ## Print a list of the transition probabilities
     def print(self):

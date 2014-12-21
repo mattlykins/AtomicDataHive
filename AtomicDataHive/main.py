@@ -3,48 +3,24 @@ from classes.stout import *
 from classes.helpers import *
 
 import os,re
-
-# Program Start Here
-# Take in parameters: DB Type (Stout) and import location (file or folder)
-
-isStout = True
-location = ".\\stout\\"
-
-
-
-# Generate list of paths
-# For stout, the 3 files will be in the same directory
-pathList = []
-for root, dirs, files in os.walk(location):
-    for file in files:
-        if file.endswith(".nrg"):
-            pathList.append(os.path.join(root,file))
             
             
 #Process pathList into element and species
 
 
-for path in pathList:
-    filePath = path.split('\\')
-    fileName = filePath[-1]
-    nameList = re.split('[_,.]',fileName)
-    
-    elemName = pullValue(nameList)
-    specIon = pullValue(nameList, 'INT')
-    elemIon = specIon - 1
-    
-    #print(elemName,specIon)
+
     
     #-------------------------------------------
 
 
 
 O2 = species(8,2)
-print(O2.spectrumName)
-readStout(O2)
+print(O2.stoutName)
+importStout()
 
-for x in O2.transitions.items():
-    x[1].print()
+
+# for x in O2.transitions.items():
+#     x[1].print()
 
 
 
