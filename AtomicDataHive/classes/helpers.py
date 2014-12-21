@@ -13,7 +13,7 @@ def is_int(x):
     value = is_number(x)
     # If so, is this value an integer?
     if float.is_integer(value) == True:
-        return value
+        return int(value)
     else:
         raise TypeError("%s is not an integer" % x)
             

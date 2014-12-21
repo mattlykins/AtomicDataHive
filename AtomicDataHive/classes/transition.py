@@ -5,7 +5,13 @@ class tranProb(object):
     
     ## Initialize all tps to zero
     def __init__(self):
-        pass
+        self.E1=0.0
+        self.E2=0.0
+        self.E3=0.0
+        self.M1=0.0
+        self.M2=0.0
+        self.M3=0.0
+        
                     
     ## Set the tp for a given type
     # @param value The Einstein A for the transition type

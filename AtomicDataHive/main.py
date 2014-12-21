@@ -1,37 +1,14 @@
 from classes.species import *
-from classes.stout import stout
+from classes.stout import *
 from classes.helpers import *
 
 import os,re
-
-ELEMENTNAMES = {}
-ELEMENTSYMBOLS = {}
-
-SET_DEBUG={'preload':False}
-
-#Preload element names and symbols
-with open('ElementNames.txt','r') as File:
-        for line in File:
-            tList=line.split()
-            Z = pullValue(tList, 'INT')
-            symbol = pullValue(tList)
-            name = pullValue(tList)
-            
-            ELEMENTNAMES[Z] = name
-            ELEMENTSYMBOLS[Z] = symbol
-            
-if SET_DEBUG['preload']:
-    for e in ELEMENTNAMES.items():
-        print(e)
-    for e in ELEMENTSYMBOLS.items():
-        print(e)
-
 
 # Program Start Here
 # Take in parameters: DB Type (Stout) and import location (file or folder)
 
 isStout = True
-location = ".\\"
+location = ".\\stout\\"
 
 
 
@@ -59,10 +36,15 @@ for path in pathList:
     #print(elemName,specIon)
     
     #-------------------------------------------
-    
-C = species()
 
 
+
+O2 = species(8,2)
+print(O2.spectrumName)
+readStout(O2)
+
+for x in O2.transitions.items():
+    x[1].print()
 
 
 
