@@ -1,4 +1,5 @@
 from classes.energylevel import EnergyLevel
+from classes.collision import collision
 
 ## Store transition probabilities by transition type
 class tranProb(object):
@@ -49,22 +50,16 @@ class Transition(object):
         self.energy = -1.0
         self.linestrength = -1.0
         
-        # Initialize the collision strength dictionary
+        self.collision = collision()
+        
+        
         # Set the default Einstein As and transition energies to -1
-        self.CS={}
         self.eina=tranProb()
         if(lo.energy==hi.energy and lo.g==hi.g):
             raise Exception("Transition from the same levels")
         else:
-            self.energy=hi.energy-lo.energy
-       
-        
-    ## Set the electron collision strength for a transition
-    # @param tempList is a list of temperatures
-    # @param csList is the corresponding list of collision strengths
-    def setCS(self,tempList,csList):
-        for temp,colstr in zip(tempList,csList):
-            self.CS[temp]=float(colstr)
+            self.energy=hi.energy-lo.energy      
+
             
     ## Print the contents of the given transition
     def print(self):
@@ -72,9 +67,9 @@ class Transition(object):
         print("Upper Level: ",self.hi.index,self.hi.energy,self.hi.g,self.hi.config,self.hi.term)
         print("Energy: ",self.energy)
         self.eina.print()
-        tTemps = sorted(self.CS,key=lambda k: int(k) if k.isdigit() else float('-inf'))
-        print("Temps",tTemps)
-        tCS=[]
-        for t in tTemps:
-            tCS.append(self.CS[t])
-        print("CS",tCS)
+#         tTemps = sorted(self.CS,key=lambda k: int(k) if k.isdigit() else float('-inf'))
+#         print("Temps",tTemps)
+#         tCS=[]
+#         for t in tTemps:
+#             tCS.append(self.CS[t])
+#         print("CS",tCS)
