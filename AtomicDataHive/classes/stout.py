@@ -62,9 +62,14 @@ def readStout(thisSpecies,basePath):
             if "#" in tList[0]: continue      
       
             isEina = False
+            isGf = False
+            isLineStrength = False
     
-            tbEina = pullValue(tList)        
-            if tbEina == 'A': isEina=True
+            tbCode = pullValue(tList)        
+            if tbCode == 'A': isEina=True
+            elif tbCode == 'S': isLineStrength=True
+            elif tbCode == 'GF': isGf = True
+            else: raise Exception("Must start with A, S, or GF")
     
             tLo = pullValue(tList, 'INT')
             tHi = pullValue(tList, 'INT')
@@ -81,7 +86,11 @@ def readStout(thisSpecies,basePath):
     
             if sKey in thisSpecies.transitions:
                 if isEina:
-                    thisSpecies.transitions[sKey].eina.setTP(tTP, tType)                        
+                    thisSpecies.transitions[sKey].eina.setTP(tTP, tType)
+                elif isLineStrength:
+                    thisSpecies.transitions[sKey].linestrength = tTP
+                elif isGf:
+                    thisSpecies.transitions[sKey].gf = tTP                        
                 else:
                     print("Not Eina")
                     continue
@@ -92,14 +101,18 @@ def readStout(thisSpecies,basePath):
                     if isEina:
                         tTran.eina.setTP(tTP, tType)
                         thisSpecies.transitions[sKey]=tTran
+                    elif isLineStrength:
+                        tTran.linestrength = tTP
+                    elif isGf:
+                        tTran.gf = tTP    
                     else:
                         print("Not Eina")
                         continue
                         #raise Exception("Not Eina")
                 except IndexError:
-                    print("*"*60)
-                    print(thisSpecies.stoutName,sKey)
-                    print("*"*60)
+                    #print("*"*60)
+                    #print(thisSpecies.stoutName,sKey)
+                    #print("*"*60)
                     continue
                 
                 
@@ -124,6 +137,7 @@ def readStout(thisSpecies,basePath):
                 # Only supporting CS Electron at the moment        
                 tx = pullValue(tList)
                 if tx != 'CS':
+                    print(tx)
                     continue
                     #raise Exception("NOT CS") 
                 tx = pullValue(tList)        
@@ -132,6 +146,11 @@ def readStout(thisSpecies,basePath):
                     #raise Exception("NOT ELECTRON")  
          
                 #print(tList) 
+                
+                # Determine what collision data is here using the unsplit and in
+                # Loop over the split list, discarding non-ints and non-floats
+                # Verify the proper # of values
+                # Collisions need a class?
          
                 tLo = pullValue(tList, 'INT')         
                 tHi = pullValue(tList, 'INT') 
@@ -143,9 +162,10 @@ def readStout(thisSpecies,basePath):
                 try:
                     thisSpecies.transitions[sKey].setCS(tTemps,tList)
                 except KeyError:
-                    print("-"*60)
-                    print(thisSpecies.stoutName,sKey)
-                    print("-"*60)
+                    #print("-"*60)
+                    #print(thisSpecies.stoutName,sKey)
+                    #print("-"*60)
+                    continue
     
 def writeStout():
     pass
@@ -168,6 +188,8 @@ def findStoutFiles():
 def importStout():    
     pathList = findStoutFiles()
     
+    dataSet = {}
+    
     for path in pathList:
         filePath = os.path.split(path)
         basePath = filePath[0] + os.sep
@@ -186,4 +208,8 @@ def importStout():
         
         X = species(elemZ,specIon)
         readStout(X,basePath)
+        
+        dataSet[X.stoutName] = X
+        
+    return dataSet
         

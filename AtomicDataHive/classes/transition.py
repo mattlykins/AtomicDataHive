@@ -38,18 +38,16 @@ class tranProb(object):
 
 ## Store data related to transitions
 class Transition(object):
-    lo = None
-    hi = None
-    CS = {}
-    eina = None
-    gf = -1.0
-    energy = -1.0
     ## Construct a transition
     # @param lo The energy level object of the lower level
     # @param hi The energy level object of the upper level
     def __init__(self,lo=EnergyLevel(),hi=EnergyLevel()):
         self.lo=lo
         self.hi=hi
+        
+        self.gf = -1.0
+        self.energy = -1.0
+        self.linestrength = -1.0
         
         # Initialize the collision strength dictionary
         # Set the default Einstein As and transition energies to -1
@@ -59,14 +57,7 @@ class Transition(object):
             raise Exception("Transition from the same levels")
         else:
             self.energy=hi.energy-lo.energy
-            
-    ## Prevent objects from getting new attributes
-    def __setattr__(self, name, value):
-        if hasattr(self, name):
-            object.__setattr__(self, name, value)
-        else:
-            raise TypeError('Cannot set name %r on object of type %s' % (name, self.__class__.__name__)) 
-        
+       
         
     ## Set the electron collision strength for a transition
     # @param tempList is a list of temperatures
