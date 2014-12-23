@@ -5,6 +5,19 @@ from classes.helpers import * #@UnusedWildImport
 from classes.element import *
 
 import os.path,re
+
+collDataTypes = ['CSE',
+                 'CSP',
+                 'RE',
+                 'RP',
+                 'RH',
+                 'RHE',
+                 'RHE+',
+                 'RHE+2',
+                 'RH2',
+                 'RH2-O',
+                 'RH2-P'                    
+                 ] 
         
 def readStout(thisSpecies,basePath):        
         
@@ -119,53 +132,129 @@ def readStout(thisSpecies,basePath):
     collFileName = basePath + thisSpecies.stoutName + ".coll"
     with open(collFileName,'r') as collFile:
         #Skip magic number
-        collFile.readline()     
-        tTemps=collFile.readline().split()
-        if pullValue(tTemps) == 'TEMP':
-            for line in collFile:
-                tList=line.split()
-                if "****" in tList[0]:break
-                
-                if "#" in tList[0]: continue
-                
-                if 'TEMP' in tList[0]:
-                    tList.pop(0)
-                    tTemps = tList
-                    continue
+        collFile.readline()
+        
+        numTemps = 0
+        tempLabel = ''
+        tempList = []
+        
+        for line in collFile:
+            tList = line.split()
+            if '****' in tList[0]: break
+            if tList[0][0] == '#':continue
+            #print(tList)
+            
+            
+            if 'TEMP' in tList:
+                numTemps = numTemps + 1
+                tempLabel = 'T' + str(numTemps)
+                # Pop off TEMP
+                pullValue(tList)
                 #print(tList)
-         
-                # Only supporting CS Electron at the moment        
-                tx = pullValue(tList)
-                if tx != 'CS':
-                    print(tx)
-                    continue
-                    #raise Exception("NOT CS") 
-                tx = pullValue(tList)        
-                if tx != 'ELECTRON':
-                    continue
-                    #raise Exception("NOT ELECTRON")  
-         
-                #print(tList) 
+                tempList = tList
                 
-                # Determine what collision data is here using the unsplit and in
-                # Loop over the split list, discarding non-ints and non-floats
-                # Verify the proper # of values
-                # Collisions need a class?
-         
+            elif 'CSELECTRON' or 'CS ELECTRON' in tList:
+                # CS ELECTRON or CSELECTRON 
+                collDataIndex = 0
+                # Pop off CSELECTRON or CS and ELECTRON
+                pullValue(tList)                
+                if 'ELECTRON' in tList: pullValue(tList) 
+ 
+                
+                
+                
+                #---------------------------------------
                 tLo = pullValue(tList, 'INT')         
                 tHi = pullValue(tList, 'INT') 
-         
-                #print(tList)
-         
+      
                 sKey = str(tLo) + ":" + str(tHi)
-    
-                try:
-                    thisSpecies.transitions[sKey].setCS(tTemps,tList)
-                except KeyError:
-                    #print("-"*60)
-                    #print(thisSpecies.stoutName,sKey)
-                    #print("-"*60)
-                    continue
+                #print(sKey,tList)
+                
+                tList.insert(0,tempLabel)                    
+                
+                if sKey in thisSpecies.transitions:
+                    thisSpecies.transitions[sKey].collision.temps[tempLabel] = tempList
+                    thisSpecies.transitions[sKey].collision.collData[collDataTypes[collDataIndex]] = tList
+                else:
+                    try:
+                        tTran = Transition(thisSpecies.levels[tLo-1],thisSpecies.levels[tHi-1])
+                        thisSpecies.transitions[sKey]=tTran
+                        thisSpecies.transitions[sKey].collision.temps[tempLabel] = tList
+                        thisSpecies.transitions[sKey].collision.collData[0] = tList
+                    except IndexError:
+                        print("*"*60)
+                        print(thisSpecies.stoutName,sKey)
+                        print("*"*60)
+                        continue
+                    
+                    
+#             
+#             if( dataType2 ):
+#                 print("INT")
+#             if dataType.upper() == 'CSELECTRON':
+#                 lgCS = True
+#                 lgColliders['Electron']=True
+#             elif dataType.upper() == 'CS':
+#                 lgCS = True
+#             elif dataType.upper() == 'RATE':
+#                 lgRate = True
+#             elif dataType.upper() == 'TEMP':
+#                 lgTemp = True
+#             elif '******' in dataType:
+#                 break
+#             else:
+#                 raise ValueError("Invalid term, %s, in %s" % (dataType,collFileName))
+#             
+#             print(dataType)
+            
+            
+
+#         tTemps=collFile.readline().split()
+#         if pullValue(tTemps) == 'TEMP':
+#             for line in collFile:
+#                 tList=line.split()
+#                 if "****" in tList[0]:break
+#                 
+#                 if "#" in tList[0]: continue
+#                 
+#                 if 'TEMP' in tList[0]:
+#                     tList.pop(0)
+#                     tTemps = tList
+#                     continue
+#                 #print(tList)
+#          
+#                 # Only supporting CS Electron at the moment        
+#                 tx = pullValue(tList)
+#                 if tx != 'CS':
+#                     print(tx)
+#                     continue
+#                     #raise Exception("NOT CS") 
+#                 tx = pullValue(tList)        
+#                 if tx != 'ELECTRON':
+#                     continue
+#                     #raise Exception("NOT ELECTRON")  
+#          
+#                 #print(tList) 
+#                 
+#                 # Determine what collision data is here using the unsplit and in
+#                 # Loop over the split list, discarding non-ints and non-floats
+#                 # Verify the proper # of values
+#                 # Collisions need a class?
+#          
+#                 tLo = pullValue(tList, 'INT')         
+#                 tHi = pullValue(tList, 'INT') 
+#          
+#                 #print(tList)
+#          
+#                 sKey = str(tLo) + ":" + str(tHi)
+#     
+#                 try:
+#                     thisSpecies.transitions[sKey].setCS(tTemps,tList)
+#                 except KeyError:
+#                     #print("-"*60)
+#                     #print(thisSpecies.stoutName,sKey)
+#                     #print("-"*60)
+#                     continue
     
 def writeStout():
     pass

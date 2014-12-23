@@ -1,60 +1,38 @@
 class collision:
-    colliders =['Electron',
-                'Proton',
-                'H0',
-                'He0',
-                'He+',
-                'He+2',
-                'H2',
-                'H2 Ortho',
-                'H2 Para'
-                ]    
+    colliders = ['ELECTRON',
+                  'PROTON'
+                   'H',
+                   'HE',
+                   'HE+',
+                   'HE+2',
+                   'H2',
+                   'H2-ORTHO',
+                   'H2-PARA'
+                   ]
+   
     
     def __init__(self):
-        ## Store collision rates for all colliders
-        ## Collision strengths for electron and proton
-        self._strength = {}
-        self.temperature = -1.0
-        self._rate = {}
-        
-        
-        ## Initialize all collider rates to -1 by passing a tuple
-        for x in __class__.colliders:
-            self.rate = (-1.0,x)
-            self.strength = (-1.0,x)
-            
-    
+        ## collData Dictionary storing collData lists with collDataType as key
+        # collData list's first value is the name key of the associated temp
+        self._collData = {}
+        ## temps Dictionary that sorts temperature lists with a name key
+        self._temps = {}    
     
     @property
-    def rate(self):
-        return self._rate
+    def collData(self):
+        return self._collData
     
-    @rate.setter
-    def rate(self, vallider):
-        for c in __class__.colliders:
-            if c == vallider[1]:
-                self._rate[vallider[1]] = float(vallider[0])
+    @collData.setter
+    def collData(self, collData):
+            self._collData = collData
                 
     @property
-    def strength(self):
-        return self._strenth
+    def temps(self):
+        return self._temps
     
-    @strength.setter
-    def strength(self,vallider):
-        for c in __class__.colliders:
-            if c == vallider[1]:
-                self._strength[vallider[1]] = float(vallider[0])
-                
-    @property
-    def temperature(self):
-        return self._temperature
-    
-    @temperature.setter
-    def temperature(self, temp):
-        if temp > 0.0 or -1.0:
-            self._temperature = temp
-        else:
-            raise ValueError("Trying to set negative temperature")
+    @temps.setter
+    def temps(self, temp):
+        self._temps = temp
         
         
         

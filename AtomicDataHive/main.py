@@ -9,10 +9,19 @@ import os,re
 
 
 O2 = species(8,2)
+Fe2 = species(26,2)
 #stoutData = importStout()
+readStout(Fe2,"")
 readStout(O2,"")
-print(O2.levels[1].energy)
 
-print(O2.transitions['1:2'].collision.temperature)
+
+print(Fe2.transitions['1:2'].collision.temps)
+print(Fe2.transitions['1:2'].collision.collData)
+
+print(O2.transitions['1:5'].collision.temps)
+print(O2.transitions['1:5'].collision.collData)
+#print(O2.levels[1].energy)
+
+#print(O2.transitions['1:2'].collision.temperature)
 
 #print(stoutData["fe_2"].transitions['1:2'].CS)
