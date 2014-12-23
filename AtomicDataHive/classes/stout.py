@@ -6,18 +6,18 @@ from classes.element import *
 
 import os.path,re
 
-collDataTypes = ['CSE',
-                 'CSP',
-                 'RE',
-                 'RP',
-                 'RH',
-                 'RHE',
-                 'RHE+',
-                 'RHE+2',
-                 'RH2',
-                 'RH2-O',
-                 'RH2-P'                    
-                 ] 
+collDataStout = ['CS ELECTRON',
+             'CS PROTON',
+             'RATE ELECTRON',
+             'RATE PROTON',
+             'RATE H',
+             'RATE HE',
+             'RATE HE+',
+             'RATE HE+2',
+             'RATE H2',
+             'RATE H2 ORTHO',
+             'RATE H2 PARA'                    
+             ]
         
 def readStout(thisSpecies,basePath):        
         
@@ -145,42 +145,88 @@ def readStout(thisSpecies,basePath):
             #print(tList)
             
             
-            if 'TEMP' in tList:
-                numTemps = numTemps + 1
-                tempLabel = 'T' + str(numTemps)
+            if 'TEMP' == tList[0].upper():
                 # Pop off TEMP
                 pullValue(tList)
                 #print(tList)
                 tempList = tList
                 
-            elif 'CSELECTRON' or 'CS ELECTRON' in tList:
-                # CS ELECTRON or CSELECTRON 
-                collDataIndex = 0
-                # Pop off CSELECTRON or CS and ELECTRON
-                pullValue(tList)                
-                if 'ELECTRON' in tList: pullValue(tList) 
- 
+                #print(tList)
                 
-                
-                
-                #---------------------------------------
+            else:            
+                if 'CSELECTRON' == tList[0].upper():
+                    # CS ELECTRON or CSELECTRON 
+                    cDataTypeIndex = 0
+                    # Pop off CSELECTRON or CS and ELECTRON
+                    pullValue(tList)                
+                elif 'CS ELECTRON' == (tList[0] + " " + tList[1]).upper():
+                    cDataTypeIndex = 0
+                    # Pop off CSELECTRON or CS and ELECTRON
+                    pullValue(tList)  
+                    pullValue(tList)   
+                elif 'CS PROTON' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 1
+                elif 'RATE ELECTRON' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 2
+                elif 'RATE PROTON' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 3                   
+                elif 'RATE H' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 4     
+                elif 'RATE HE' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 5 
+                elif 'RATE HE+' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 6
+                elif 'RATE HE+2' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 7
+                elif 'RATE H2 ORTHO' == (tList[0] + " " + tList[1] + " " + tList[2]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 8                                    
+                elif 'RATE H2 PARA' == (tList[0] + " " + tList[1] + " " + tList[2]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 9                    
+                elif 'RATE H2' == (tList[0] + " " + tList[1]).upper():
+                    pullValue(tList)
+                    pullValue(tList)
+                    cDataTypeIndex = 10
+                else:
+                    raise ValueError("Coll File reading unknown type:%s" % tList[0])
+                                        
+                #---------------------------------------                
                 tLo = pullValue(tList, 'INT')         
                 tHi = pullValue(tList, 'INT') 
       
                 sKey = str(tLo) + ":" + str(tHi)
                 #print(sKey,tList)
                 
-                tList.insert(0,tempLabel)                    
+                               
                 
                 if sKey in thisSpecies.transitions:
-                    thisSpecies.transitions[sKey].collision.temps[tempLabel] = tempList
-                    thisSpecies.transitions[sKey].collision.collData[collDataTypes[collDataIndex]] = tList
+                    cDataType = thisSpecies.transitions[sKey].collision.collDataTypes[cDataTypeIndex]
+                    thisSpecies.transitions[sKey].collision.collData = [tempList, tList,cDataType]
                 else:
                     try:
                         tTran = Transition(thisSpecies.levels[tLo-1],thisSpecies.levels[tHi-1])
                         thisSpecies.transitions[sKey]=tTran
-                        thisSpecies.transitions[sKey].collision.temps[tempLabel] = tList
-                        thisSpecies.transitions[sKey].collision.collData[0] = tList
+                        cDataType = thisSpecies.transitions[sKey].collision.collDataTypes[cDataTypeIndex]
+                        thisSpecies.transitions[sKey].collision.collData = [tempList, tList,cDataType]
                     except IndexError:
                         print("*"*60)
                         print(thisSpecies.stoutName,sKey)
