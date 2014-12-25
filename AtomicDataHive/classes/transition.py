@@ -58,18 +58,4 @@ class Transition(object):
         if(lo.energy==hi.energy and lo.g==hi.g):
             raise Exception("Transition from the same levels")
         else:
-            self.energy=hi.energy-lo.energy      
-
-            
-    ## Print the contents of the given transition
-    def print(self):
-        print("Lower Level: ",self.lo.index,self.lo.energy,self.lo.g,self.lo.config,self.lo.term)
-        print("Upper Level: ",self.hi.index,self.hi.energy,self.hi.g,self.hi.config,self.hi.term)
-        print("Energy: ",self.energy)
-        self.eina.print()
-#         tTemps = sorted(self.CS,key=lambda k: int(k) if k.isdigit() else float('-inf'))
-#         print("Temps",tTemps)
-#         tCS=[]
-#         for t in tTemps:
-#             tCS.append(self.CS[t])
-#         print("CS",tCS)
+            self.energy=hi.energy-lo.energy  

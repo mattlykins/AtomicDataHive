@@ -1,3 +1,4 @@
+import pprint
 class collision:
     collDataTypes = ['CSE',
                  'CSP',
@@ -33,7 +34,3 @@ class collision:
             tempDir[t] = coll
             
         self._collData[dataType] = tempDir
-        
-        
-        
-        

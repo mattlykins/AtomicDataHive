@@ -40,4 +40,4 @@ class EnergyLevel(object):
     @g.setter
     def g(self,g):
         _x = is_number(g)
-        self._g = _x   
+        self._g = _x
