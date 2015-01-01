@@ -6,18 +6,18 @@ from classes.element import *
 
 import os.path,re
 
-collDataStout = ['CS ELECTRON',
-             'CS PROTON',
-             'RATE ELECTRON',
-             'RATE PROTON',
-             'RATE H',
-             'RATE HE',
-             'RATE HE+',
-             'RATE HE+2',
-             'RATE H2',
-             'RATE H2 ORTHO',
-             'RATE H2 PARA'                    
-             ]
+collDataStout = {('CS ELECTRON',0,'ELECTRON'),
+             ('CS PROTON',0,'PROTON'),
+             ('RATE ELECTRON',1,'ELECTRON'),
+             ('RATE PROTON',1,'PROTON'),
+             ('RATE H',1,'H'),
+             ('RATE HE'),
+             ('RATE HE+'),
+             ('RATE HE+2'),
+             ('RATE H2'),
+             ('RATE H2 ORTHO'),
+             ('RATE H2 PARA')                    
+             }
         
 def readStout(thisSpecies,basePath):        
         
