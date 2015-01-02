@@ -74,7 +74,7 @@ def dbAddLevel(c,index,energy,g,speciesid):
         
 def dbAddTransition(c,name,lo, hi,speciesid):
     c.execute("INSERT INTO transitions(name,lo,hi,speciesid) VALUES (?,?,?,?)",(name,lo,hi,speciesid))
-    SET_DEBUG_DB = False
+    SET_DEBUG_DB = True
     if(SET_DEBUG_DB):
         c.execute("SELECT name FROM species WHERE species.speciesid=?", (speciesid,))
         tSpec = c.fetchone()

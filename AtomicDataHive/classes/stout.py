@@ -3,6 +3,7 @@ from classes.energylevel import EnergyLevel
 from classes.transition import Transition
 from classes.helpers import * #@UnusedWildImport
 from classes.element import *
+from classes.sql import *
 
 import os.path,re
 
@@ -347,4 +348,28 @@ def importStout():
         dataSet[X.stoutName] = X
         
     return dataSet
+
+def dbStout(species):
+    con = dbConnect('stout.db')
+    c = dbCreate(con)
+    
+    dbAddSpecies(c, species.elemName, species.Z, species.specIon)
+    dbCommit(con)
+    
+    speciesid = c.lastrowid
+    
+    for x in species.levels:
+        dbAddLevel(c, x.index, x.energy, x.g, speciesid)
         
+    dbCommit(con)
+    
+    for key,T in species.transitions.items():
+        dbAddTransition(c, key, T.lo.index, T.hi.index, speciesid)
+        
+    dbCommit(con)
+        
+    
+    
+
+        
+    
