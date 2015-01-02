@@ -353,10 +353,8 @@ def dbStout(species):
     con = dbConnect('stout.db')
     c = dbCreate(con)
     
-    dbAddSpecies(c, species.elemName, species.Z, species.specIon)
+    speciesid = dbAddSpecies(c, species.elemName, species.Z, species.specIon)
     dbCommit(con)
-    
-    speciesid = c.lastrowid
     
     for x in species.levels:
         dbAddLevel(c, x.index, x.energy, x.g, speciesid)
@@ -364,7 +362,9 @@ def dbStout(species):
     dbCommit(con)
     
     for key,T in species.transitions.items():
-        dbAddTransition(c, key, T.lo.index, T.hi.index, speciesid)
+        transitionid = dbAddTransition(c, key, T.lo.index, T.hi.index, speciesid)
+        print(transitionid)
+        dbAddTransitionProbability(c, T.eina.E1, T.eina.E2, T.eina.E3, T.eina.M1, T.eina.M2, T.eina.M3, transitionid, speciesid)
         
     dbCommit(con)
         
