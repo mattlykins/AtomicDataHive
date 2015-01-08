@@ -1,17 +1,20 @@
 import pprint
 class collision:
-    collDataTypes = ['CSE',
-                 'CSP',
-                 'RE',
-                 'RP',
-                 'RH',
-                 'RHE',
-                 'RHE+',
-                 'RHE+2',                 
-                 'RH2-O',
-                 'RH2-P',
-                 'RH2'                    
-                 ]  
+    # List of lists that holds the id, isRate, and collider index
+    # collider index refernces colliders list
+    collDataTypes = [('CSE',False,0),
+                 ('CSP',False,1),
+                 ('RE',True,0),
+                 ('RP',True,1), 
+                 ('RH',True,2),
+                 ('RHE',True,3),
+                 ('RHE+',True,4),
+                 ('RHE+2',True,5),                 
+                 ('RH2-O',True,6),
+                 ('RH2-P',True,7),
+                 ('RH2',True,8)                   
+                 ] 
+    colliders = ['ELECTRON','PROTON','HYDROGEN','HELIUM','HELIUM+','HELIUM+2','HYDROGEN-ORTHO','HYDROGEN-PARA','MOLEHYDROGEN']     
     
     def __init__(self):
         ## collData Dictionary storing collData dictionaries with collDataType as key
